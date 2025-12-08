@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-7-4 점수 계산기 (2025년) - 정보 수집</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        h1 { color: #333; text-align: center; margin-bottom: 10px; font-size: 24px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
+        .section { margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px; }
+        .section-title { font-size: 18px; color: #667eea; margin-bottom: 15px; font-weight: bold; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #333; font-weight: 500; font-size: 14px; }
+        input[type="text"], input[type="tel"], input[type="number"], select { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; transition: border-color 0.3s; }
+        input:focus, select:focus { outline: none; border-color: #667eea; }
+
+        /* 체크박스 스타일 수정 */
+        .checkbox-group { display: flex; align-items: center; cursor: pointer; padding: 5px 0; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; cursor: pointer; }
+        .checkbox-group label { margin-bottom: 0; cursor: pointer; user-select: none; }
+
+        button { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 20px; }
+        button:hover { transform: scale(1.02); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .result { margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; text-align: center; display: none; }
+        .result.show { display: block; }
+        .result h2 { margin-bottom: 15px; font-size: 22px; }
+        .score { font-size: 48px; font-weight: bold; margin: 20px 0; }
+        #calculatorSection { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 개인정보 수집 섹션 -->
+        <div id="userInfoSection">
+            <h1>🇰🇷 E-7-4 점수 계산기</h1>
+            <div class="subtitle">무료 계산기 사용을 위해 성함과 연락처를 입력해주세요.</div>
+            <form id="userForm">
+                <div class="section">
+                    <div class="input-group">
+                        <label for="name">성함</label>
+                        <input type="text" id="name" name="name" placeholder="홍길동" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="phone">연락처</label>
+                        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+                    </div>
+                    <!-- 수정된 체크박스 부분: onclick 이벤트 제거 -->
+                    <div class="input-group checkbox-group">
+                        <input type="checkbox" id="agree" required>
+                        <label for="agree">개인정보 수집 및 이용에 동의합니다.</label>
+                    </div>
+                </div>
+                <button type="submit" id="submitUserInfo">계산기 사용하기</button>
+            </form>
+        </div>
+
+        <!-- 점수 계산기 섹션 (초기 숨김) -->
+        <div id="calculatorSection">
+             <h1>🇰🇷 E-7-4 점수 계산기</h1>
+             <div class="subtitle">2025년 숙련기능인력 점수제 최신 기준</div>
+             <form id="calculatorForm">
+                <div class="section">
+                    <div class="section-title">📋 기본항목</div>
+                    <div class="input-group"><label>연간 소득 (만원)</label><input type="number" id="income" placeholder="예: 3000" required></div>
+                    <div class="input-group"><label>학력</label><select id="education" required><option value="">선택하세요</option><option value="0">고졸 이하</option><option value="1">전문학사</option><option value="2">학사</option><option value="3">석사 이상</option></select></div>
+                    <div class="input-group"><label>만 나이</label><input type="number" id="age" placeholder="예: 32" required></div>
+                    <div class="input-group"><label>한국어 능력 시험 종류</label><select id="koreanType" required><option value="">선택하세요</option><option value="topik">TOPIK</option><option value="kiip">KIIP</option></select></div>
+                    <div class="input-group"><label>한국어 능력 등급/단계</label><input type="number" id="koreanLevel" min="1" max="6" placeholder="1~6" required></div>
+                </div>
+                <div class="section">
+                    <div class="section-title">✅ 선택항목</div>
+                    <div class="input-group"><label>동일 업체 연속 근무 기간 (년)</label><input type="number" id="service" value="0"></div>
+                    <div class="input-group"><label>본인 명의 순자산 (만원)</label><input type="number" id="assets" value="0"></div>
+                    <div class="input-group checkbox-group"><input type="checkbox" id="studyExp"><label for="studyExp">국내 유학/연수 경험 있음</label></div>
+                </div>
+                <div class="section">
+                    <div class="section-title">➕ 가점항목</div>
+                    <div class="input-group checkbox-group"><input type="checkbox" id="certificate"><label for="certificate">관련 분야 국가기술자격증</label></div>
+                    <div class="input-group"><label>추천서</label><select id="recommendation"><option value="0">없음</option><option value="1">관계 중앙부처</option><option value="2">광역지자체</option></select></div>
+                    <div class="input-group checkbox-group"><input type="checkbox" id="rural"><label for="rural">읍면지역 2년 이상 근무</label></div>
+                    <div class="input-group"><label>사회봉사 활동 시간</label><input type="number" id="volunteer" value="0"></div>
+                    <div class="input-group"><label>연간 소득세 납부액 (만원)</label><input type="number" id="tax" value="0"></div>
+                </div>
+                <div class="section">
+                    <div class="section-title">➖ 감점항목</div>
+                    <div class="input-group"><label>출입국관리법 위반 횟수</label><input type="number" id="immigration" value="0"></div>
+                    <div class="input-group"><label>국내법 위반 횟수</label><input type="number" id="criminal" value="0"></div>
+                </div>
+                <button type="submit">점수 계산하기</button>
+             </form>
+             <div class="result" id="result">
+                <h2>계산 결과</h2>
+                <div class="score" id="totalScore">0점</div>
+                <div class="result-detail"><div>기본항목 점수: <span id="basicScore">0</span>점</div></div>
+                <div class="result-status" id="status"></div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        // 개인정보 폼 제출 처리
+        const userForm = document.getElementById('userForm');
+        const submitButton = document.getElementById('submitUserInfo');
+
+        userForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 체크박스 확인 (required 속성이 있지만 한 번 더 명시적 확인)
+            if (!document.getElementById('agree').checked) {
+                alert('개인정보 수집 및 이용에 동의해주세요.');
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = '전송 중...';
+
+            // Google App Script URL을 여기에 붙여넣으세요.
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxe61tcSiDfhmwTz06z6ARMPMpqNDWkor1F91ksXC9lMjXGJiSISH32MyfY6dhGbhA/exec';
+ 
+            const formData = new FormData(userForm);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    console.log('Success!', response);
+                    document.getElementById('userInfoSection').style.display = 'none';
+                    document.getElementById('calculatorSection').style.display = 'block';
+                    // 화면 최상단으로 스크롤 이동
+                    window.scrollTo(0, 0);
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert("오류가 발생했습니다. 잠시 후 다시 시도하거나 관리자에게 문의하세요.");
+                    submitButton.disabled = false;
+                    submitButton.textContent = '계산기 사용하기';
+                });
+        });
+
+        // 계산기 로직
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const income = parseFloat(document.getElementById('income').value);
+            const education = parseInt(document.getElementById('education').value);
+            const age = parseInt(document.getElementById('age').value);
+            const koreanType = document.getElementById('koreanType').value;
+            const koreanLevel = parseInt(document.getElementById('koreanLevel').value);
+            const service = parseFloat(document.getElementById('service').value) || 0;
+            const assets = parseFloat(document.getElementById('assets').value) || 0;
+            const studyExp = document.getElementById('studyExp').checked;
+            const certificate = document.getElementById('certificate').checked;
+            const recommendation = parseInt(document.getElementById('recommendation').value);
+            const rural = document.getElementById('rural').checked;
+            const volunteer = parseFloat(document.getElementById('volunteer').value) || 0;
+            const tax = parseFloat(document.getElementById('tax').value) || 0;
+            const immigration = parseInt(document.getElementById('immigration').value) || 0;
+            const criminal = parseInt(document.getElementById('criminal').value) || 0;
+            let score = 0, basicScore = 0;
+            if (income >= 3300) basicScore += 60; else if (income >= 3000) basicScore += 50; else if (income >= 2600) basicScore += 40; else if (income >= 2300) basicScore += 30; else if (income >= 2000) basicScore += 20; else basicScore += 10;
+            if (education === 3) basicScore += 20; else if (education === 2) basicScore += 15; else if (education === 1) basicScore += 10; else basicScore += 5;
+            if (age >= 20 && age <= 29) basicScore += 15; else if (age >= 30 && age <= 34) basicScore += 12; else if (age >= 35 && age <= 39) basicScore += 10; else if (age >= 40 && age <= 44) basicScore += 8; else if (age >= 45 && age <= 49) basicScore += 5;
+            if (koreanType === 'topik') { if (koreanLevel >= 5) basicScore += 20; else if (koreanLevel === 4) basicScore += 15; else if (koreanLevel === 3) basicScore += 10; else if (koreanLevel === 2) basicScore += 5; } else if (koreanType === 'kiip') { if (koreanLevel >= 5) basicScore += 20; else if (koreanLevel === 4) basicScore += 15; else if (koreanLevel === 3) basicScore += 10; else if (koreanLevel >= 1) basicScore += 5; }
+            score = basicScore;
+            if (service >= 6) score += 15; else if (service >= 4) score += 10; else if (service >= 2) score += 5;
+            if (assets >= 10000) score += 25; else if (assets >= 8000) score += 20; else if (assets >= 5000) score += 15; else if (assets >= 2000) score += 10;
+            if (studyExp) score += 15;
+            if (certificate) score += 20;
+            if (recommendation === 1) score += 20; else if (recommendation === 2) score += 10;
+            if (rural) score += 10;
+            if (volunteer >= 200) score += 5;
+            if (tax >= 400) score += 5;
+            score -= (immigration * 5); score -= (criminal * 10);
+            document.getElementById('totalScore').textContent = score + '점';
+            document.getElementById('basicScore').textContent = basicScore;
+            const statusDiv = document.getElementById('status');
+            if (score >= 200 && basicScore >= 50) { statusDiv.className = 'result-status pass'; statusDiv.textContent = '✅ 합격 기준을 충족합니다!'; } else { statusDiv.className = 'result-status fail'; let msg = '❌ 합격 기준 미달'; if (score < 200) msg += ' (총점 200점 이상 필요)'; if (basicScore < 50) msg += ' (기본항목 50점 이상 필요)'; statusDiv.textContent = msg; }
+            document.getElementById('result').classList.add('show');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
