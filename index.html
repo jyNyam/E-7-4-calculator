@@ -3,24 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K-Point E-7-4 숙련기능인력 전환 진단</title>
+    <title>K-Point E-7-4 숙련기능인력 진단</title>
     <style>
-        :root { --primary: #0d47a1; --secondary: #f44336; --bg: #f0f2f5; }
-        body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        :root { --primary: #0d47a1; --bg: #f0f2f5; }
+        body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        h2 { text-align: center; color: var(--primary); border-bottom: 2px solid #eee; padding-bottom: 15px; }
-        .section-title { font-size: 18px; font-weight: bold; margin: 25px 0 10px; padding-left: 10px; border-left: 4px solid var(--primary); color: #444; }
+        .section-title { font-size: 18px; font-weight: bold; margin: 25px 0 10px; padding-left: 10px; border-left: 4px solid var(--primary); }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
         select, input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
         .grid-box { display: grid; grid-template-columns: 1fr; gap: 8px; background: #f8f9fa; padding: 15px; border-radius: 8px; }
         .check-item { display: flex; align-items: flex-start; background: white; padding: 10px; border-radius: 4px; border: 1px solid #eee; font-size: 13px; cursor: pointer; }
         .result-panel { margin-top: 30px; padding: 25px; border: 2px solid var(--primary); border-radius: 10px; text-align: center; }
-        .res-val { font-size: 42px; font-weight: bold; color: var(--primary); }
-        .status-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; margin-top: 10px; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #08306b; }
         .hidden { display: none; }
     </style>
 </head>
@@ -28,164 +23,84 @@
 
 <div class="container">
     <div id="intro-section">
-        <h2>E-7-4 비자 전환 진단 (K-Point)</h2>
-        <p style="text-align:center; color:#666; font-size:14px;">2026년 법무부 최신 지침 적용</p>
-        <div class="form-group">
-            <label>성함 (Full Name)</label>
-            <input type="text" id="userName" placeholder="성함을 입력하세요">
-        </div>
-        <div class="form-group">
-            <label>연락처 (Phone)</label>
-            <input type="tel" id="userPhone" placeholder="010-0000-0000">
-        </div>
+        <h2 style="text-align:center; color:var(--primary);">E-7-4 비자 전환 진단 (K-Point)</h2>
+        <div class="form-group"><label>성함</label><input type="text" id="userName"></div>
+        <div class="form-group"><label>연락처</label><input type="tel" id="userPhone"></div>
         <button class="btn btn-primary" onclick="startCalc()">진단 시작하기</button>
     </div>
 
     <div id="main-section" class="hidden">
-        <h2>K-Point 300 점수 산정</h2>
-
         <div class="form-group">
-            <label class="section-title">1. 연간 소득 (최근 2년 평균 - 최대 120점)</label>
-            <select id="income" onchange="calculate()">
-                <option value="0">선택 (연봉 기준)</option>
-                <option value="120">3,500만원 이상 (120점)</option>
-                <option value="110">3,300만원 이상 (110점)</option>
-                <option value="100">3,000만원 이상 (100점)</option>
-                <option value="80">2,800만원 이상 (80점)</option>
-                <option value="50">2,600만원 이상 (50점)</option>
-                <option value="0">2,600만원 미만 (자격 미달)</option>
-            </select>
+            <label class="section-title">1. 연간 소득 (최대 120점)</label>
+            <select id="income" onchange="calculate()"><option value="0">선택</option><option value="120">3,500만↑</option><option value="100">3,000만↑</option><option value="50">2,600만↑</option></select>
         </div>
-
         <div class="form-group">
-            <label class="section-title">2. 한국어 능력 (TOPIK/KIIP - 최대 120점)</label>
-            <select id="lang" onchange="calculate()">
-                <option value="0">선택</option>
-                <option value="120">5단계/5급 이상 (120점)</option>
-                <option value="100">4단계/4급 (100점)</option>
-                <option value="80">3단계/3급 (80점)</option>
-                <option value="60">2단계/2급 (60점)</option>
-                <option value="40">1단계/1급 (40점)</option>
-            </select>
+            <label class="section-title">2. 한국어 능력 (최대 120점)</label>
+            <select id="lang" onchange="calculate()"><option value="0">선택</option><option value="120">5급↑</option><option value="100">4급</option><option value="80">3급</option><option value="60">2급</option></select>
         </div>
-
         <div class="form-group">
             <label class="section-title">3. 나이 (최대 60점)</label>
-            <select id="age" onchange="calculate()">
-                <option value="60">24세 이하 (60점)</option>
-                <option value="55">27세 이하 (55점)</option>
-                <option value="50">30세 이하 (50점)</option>
-                <option value="45">33세 이하 (45점)</option>
-                <option value="40">36세 이하 (40점)</option>
-                <option value="35">39세 이하 (35점)</option>
-                <option value="20">40세 이상 (20점)</option>
-            </select>
+            <select id="age" onchange="calculate()"><option value="60">24세↓</option><option value="50">30세↓</option><option value="35">39세↓</option><option value="20">40세↑</option></select>
         </div>
-
-        <div class="section-title">4. 가점 항목 (최대 150점 가능)</div>
+        <div class="section-title">4. 가점 및 감점</div>
         <div class="grid-box" id="bonusItems">
             <label class="check-item"><input type="checkbox" value="50" onchange="calculate()"> 중앙부처 추천 (50점)</label>
-            <label class="check-item"><input type="checkbox" value="30" onchange="calculate()"> 광역지자체 추천 (30점)</label>
-            <label class="check-item"><input type="checkbox" value="20" onchange="calculate()"> 인구감소지역 3년 이상 근무 (20점)</label>
-            <label class="check-item"><input type="checkbox" value="10" onchange="calculate()"> 국내 석사 이상 학위 (10점)</label>
-            <label class="check-item"><input type="checkbox" value="20" onchange="calculate()"> 자격증 보유 (기사 이상) (20점)</label>
+            <label class="check-item"><input type="checkbox" value="30" onchange="calculate()"> 지자체 추천 (30점)</label>
         </div>
-
-        <div class="section-title">5. 감점 항목</div>
-        <div class="grid-box" id="penaltyItems" style="background: #fff0f0;">
-            <label class="check-item"><input type="checkbox" value="5" onchange="calculate()"> 법 위반 1회 (5점)</label>
-            <label class="check-item"><input type="checkbox" value="10" onchange="calculate()"> 법 위반 2회 (10점)</label>
-            <label class="check-item"><input type="checkbox" value="50" onchange="calculate()"> 불법체류 경력 (50점)</label>
-        </div>
-
         <div class="result-panel">
-            <div style="font-size: 16px; color: #666;">나의 예상 점수 (총 300점 만점)</div>
-            <div class="res-val" id="totalScore">0점</div>
-            <div id="passStatus" class="status-badge">항목을 선택해주세요</div>
-            <p id="breakdown" style="font-size: 13px; color: #888; margin-top: 15px;"></p>
+            <div style="font-size: 14px; color: #666;">예상 총점 (200점 합격)</div>
+            <div id="totalScore" style="font-size: 42px; font-weight: bold; color: var(--primary);">0점</div>
+            <div id="passStatus" style="font-weight:bold; margin-top:10px;">항목을 선택하세요</div>
+            <p id="breakdown" style="font-size: 12px; color: #888; margin-top:10px;"></p>
         </div>
-        
-        <button id="submitBtn" class="btn btn-primary" onclick="sendToSheet()">상담 신청 및 결과 저장하기</button>
+        <button id="submitBtn" class="btn btn-primary" onclick="sendToSheet()">상담 신청 및 결과 저장</button>
     </div>
 </div>
 
 <script>
-    // 본인의 구글 앱스 스크립트 배포 URL로 교체하세요.
-    const SCRIPT_URL = 'https://script.google.com/a/macros/hrstandard.co.kr/s/AKfycbxtL60LCqnl_1eReGkGLiZYG4Nbr_ZE912K1qMRGkjqre1LrbCXxxn3PiD0qKMxQeM9iw/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzjNAqOWdXwGBxzn9CdyvLJvDobXZTwOxX33jUw-unqiy61RIACeMdaXA40KaKdhQif4A/exec';
 
     function startCalc() {
-        const name = document.getElementById('userName').value.trim();
-        const phone = document.getElementById('userPhone').value.trim();
-        if(!name || !phone) return alert("성함과 연락처를 입력해주세요.");
+        if(!document.getElementById('userName').value || !document.getElementById('userPhone').value) return alert("정보를 입력하세요.");
         document.getElementById('intro-section').classList.add('hidden');
         document.getElementById('main-section').classList.remove('hidden');
     }
-
-    // 전역 변수로 관리하여 전송 시 활용
-    let currentBonus = 0;
-    let currentPenalty = 0;
 
     function calculate() {
         const inc = parseInt(document.getElementById('income').value) || 0;
         const lang = parseInt(document.getElementById('lang').value) || 0;
         const age = parseInt(document.getElementById('age').value) || 0;
-
-        currentBonus = 0;
-        document.querySelectorAll('#bonusItems input:checked').forEach(el => currentBonus += parseInt(el.value));
+        let bonus = 0;
+        document.querySelectorAll('#bonusItems input:checked').forEach(el => bonus += parseInt(el.value));
         
-        currentPenalty = 0;
-        document.querySelectorAll('#penaltyItems input:checked').forEach(el => currentPenalty += parseInt(el.value));
-
-        const total = inc + lang + age + currentBonus - currentPenalty;
-        const safeTotal = Math.max(0, total);
-
-        document.getElementById('totalScore').innerText = safeTotal + "점";
-        
-        const status = document.getElementById('passStatus');
-        if(safeTotal >= 200) {
-            status.innerText = "합격 가능권 (PASS)";
-            status.style.background = "#e8f5e9"; status.style.color = "#2e7d32";
-        } else {
-            status.innerText = "점수 보완 필요 (FAIL)";
-            status.style.background = "#ffebee"; status.style.color = "#c62828";
-        }
-
-        document.getElementById('breakdown').innerText = `소득 ${inc} + 언어 ${lang} + 나이 ${age} + 가점 ${currentBonus} - 감점 ${currentPenalty}`;
+        const total = inc + lang + age + bonus;
+        document.getElementById('totalScore').innerText = total + "점";
+        document.getElementById('passStatus').innerText = total >= 200 ? "합격 가능권 (PASS)" : "점수 보완 필요 (FAIL)";
+        document.getElementById('breakdown').innerText = `소득:${inc}, 언어:${lang}, 나이:${age}, 가점:${bonus}`;
     }
 
-    // 데이터 전송 함수 (calculate 함수 외부로 독립)
     async function sendToSheet() {
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = true;
-        submitBtn.innerText = "전송 중...";
-
-        const name = document.getElementById('userName').value;
-        const phone = document.getElementById('userPhone').value;
-        const total = document.getElementById('totalScore').innerText;
-        const status = document.getElementById('passStatus').innerText;
-        const breakdown = document.getElementById('breakdown').innerText;
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.innerText = "전송 중...";
 
         const formData = new FormData();
-        formData.append('성함', name);
-        formData.append('연락처', phone);
+        formData.append('성함', document.getElementById('userName').value);
+        formData.append('연락처', document.getElementById('userPhone').value);
         formData.append('소득점수', document.getElementById('income').value);
         formData.append('언어점수', document.getElementById('lang').value);
         formData.append('나이점수', document.getElementById('age').value);
-        formData.append('가점합계', currentBonus);
-        formData.append('감점합계', currentPenalty);
-        formData.append('최종총점', total);
-        formData.append('합격여부', status);
-        formData.append('상세내역', breakdown);
+        formData.append('가점합계', document.querySelectorAll('#bonusItems input:checked').length); // 예시로 개수만 전송 (수정 가능)
+        formData.append('최종총점', document.getElementById('totalScore').innerText);
+        formData.append('합격여부', document.getElementById('passStatus').innerText);
+        formData.append('상세내역', document.getElementById('breakdown').innerText);
 
         try {
             await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-            alert("진단 결과가 성공적으로 전송되었습니다. 담당 행정사가 곧 연락드릴 예정입니다.");
-            submitBtn.innerText = "전송 완료";
-        } catch (error) {
-            console.error("전송 에러:", error);
-            alert("전송 중 오류가 발생했습니다. 다시 시도해 주세요.");
-            submitBtn.disabled = false;
-            submitBtn.innerText = "상담 신청 및 결과 저장하기";
+            alert("시트에 저장되었습니다!");
+            btn.innerText = "저장 완료";
+        } catch (e) {
+            alert("오류 발생!");
+            btn.disabled = false; btn.innerText = "다시 시도";
         }
     }
 </script>
